@@ -2,7 +2,7 @@
 import struct;
 import time;
 import math;
-import sam;
+import util;
 
 print;
 print('-------------------------------------------------------');
@@ -14,7 +14,7 @@ print( ':20  ', packed );
 print( ':10  first=%d second=%f' % (123, 45.6));
 print( ':20  first=%s second=%s' % (123, 45.6));
 print( ':30  first={} second={}'.format( 123, 45.6) );
-print( ':40  curr_utc_time_tuple() ', sam.curr_utc_time_tuple());
+print( ':40  curr_utc_time_tuple() ', util.curr_utc_time_tuple());
 
 print( 'UTC time:  ', time.time() );
 
@@ -23,3 +23,5 @@ print('dd', type(dd), dd);
 print('for c in dd')
 for c in dd: print(c)
 
+print
+print 0x0103
