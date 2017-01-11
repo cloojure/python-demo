@@ -4,6 +4,7 @@ import time;
 import math;
 
 def pad_to_len(data, tolen, padval=0):
+    assert type(data) == list
     needed = tolen - len(data)
     assert (needed >= 0), "padding cannot be negative"
     result = data + [padval]*needed

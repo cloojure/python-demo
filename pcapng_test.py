@@ -9,6 +9,9 @@ import pcapng;
 def test_pad_to_len():
     with pytest.raises(AssertionError):
         pcapng.pad_to_len( [1, 2, 3, 4], 3 )
+    with pytest.raises(AssertionError):
+        pcapng.pad_to_len( 5, 3 )
+
     assert [0, 0, 0, 0] == pcapng.pad_to_len( [          ], 4 )
     assert [1, 0, 0, 0] == pcapng.pad_to_len( [1,        ], 4 )
     assert [1, 2, 0, 0] == pcapng.pad_to_len( [1, 2      ], 4 )

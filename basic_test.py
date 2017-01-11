@@ -28,3 +28,8 @@ def test_xxx():
         assert 1 == 0
     with pytest.raises(AssertionError):
         thrower()
+
+    assert type( [1,2,3] ) == list
+    assert type( 3 ) == int
+    assert type( 3.14 ) == float
+    assert 3 != 4
