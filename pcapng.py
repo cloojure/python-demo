@@ -48,12 +48,12 @@ def interface_desc_block():
     reserved = 0
     snaplen = 0                     # 0 => no limit
     options_bytes=[]                #todo none at present
+    assert_block32_size( options_bytes )
     block_len_total = ( 4 +       # block type
                         4 +       # block total length
                         2 + 2 +   # linktype + reserved
                         4 +       # snaplen
                         len(options_bytes) +
                         4 )       # block total length
-    return None
 
 

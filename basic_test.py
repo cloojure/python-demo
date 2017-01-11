@@ -14,6 +14,20 @@ def test_answer():
 def thrower():
     assert False, 'forgetaboutit'
 
+def test_pack():
+    assert '\x00\x05\x00\x06' == struct.pack( '>hh', 5, 6)
+    assert '\x00\x05\x00\x06' == bytearray( [0, 5, 0, 6] )
+
+print( ':00  %r' % struct.pack( '>hh', 5, 6) )
+print( ':10  %s' % r'\x00\x05\x00\x06' )
+print(        r'\x00\x05\x00\x06' )
+print( ':20  %s' %  '\x00\x05\x00\x06' )
+print( ':30  %r' %  '\x00\x05\x00\x06' )
+print( ':40  %r' %  bytearray( [0, 5, 0, 6] ) )
+
+def test_concat():
+    assert [1, 2, 3] == [1, 2] + [3]
+
 def test_xxx():
     assert 3 == 2 + 1
     assert 0x0103 == (1*16**2 + 0*16 + 3)
@@ -37,11 +51,12 @@ def test_xxx():
 
     assert 4 == math.ceil( 3.14 )
     assert 4 == math.ceil( 4.0 )
-    x = (2 +
+    x = (2 +    # demo line continuation
          3)
     assert 5 == x
     assert 0 == 4 % 4
     assert 1 == 5 % 4
     assert 2 == 6 % 4
     assert 3 == 7 % 4
+
 
