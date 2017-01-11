@@ -32,5 +32,5 @@ def test_xxx():
     assert type( [1,2,3] ) == list
     assert type( 3 ) == int
     assert type( 3.14 ) == float
-    assert type( "abc" ) == float
+    assert type( "abc" ) == str
     assert 3 != 4

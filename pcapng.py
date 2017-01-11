@@ -9,8 +9,10 @@ def pad_to_len(data, tolen, padval=0):
     assert (needed >= 0), "padding cannot be negative"
     result = data + [padval]*needed
     return result;
-
-
+"""
+def pad_to_block32(data)
+    assert type(data) == list
+"""
 
 def section_header_block(data):
     blk_type = 0x0A0D0D0A
