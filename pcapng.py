@@ -20,6 +20,11 @@ def pad_to_block32(data):
     result = pad_to_len(data, pad_len)
     return result
 
+def verify_block32(data):
+    assert type(data) == list
+    assert 0 == len(data) % 4
+
+
 def section_header_block(data):
     blk_type = 0x0A0D0D0A
     blk_byte_order_magic = 0x1A2B3C4D
@@ -27,7 +32,7 @@ def section_header_block(data):
     major_version = 0
     section_length = -1     #todo set to actual (incl padding)
     data_pad = pad_to_block32(data)
-    options=[]              #todo none at present
+    options_bytes=[]        #todo none at present
 #   blk_total_len =
 
 #todo

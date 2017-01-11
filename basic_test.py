@@ -40,4 +40,8 @@ def test_xxx():
     x = (2 +
          3)
     assert 5 == x
+    assert 0 == 4 % 4
+    assert 1 == 5 % 4
+    assert 2 == 6 % 4
+    assert 3 == 7 % 4
 
