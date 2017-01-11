@@ -13,3 +13,4 @@ def test_answer():
 def test_xxx():
     assert 3 == 2 + 1
     assert 0x0103 == (1*16**2 + 0*16 + 3)
+    assert 93 == (7 % 4)
