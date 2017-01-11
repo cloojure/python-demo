@@ -35,5 +35,15 @@ def test_pad_to_block32():
     assert [1, 2, 3, 4, 5, 6, 7, 0] == pcapng.pad_to_block32( [1, 2, 3, 4, 5, 6, 7   ] )
     assert [1, 2, 3, 4, 5, 6, 7, 8] == pcapng.pad_to_block32( [1, 2, 3, 4, 5, 6, 7, 8] )
     
+    pcapng.assert_block32_size( [                      ] )
+    pcapng.assert_block32_size( [1, 2, 3, 4            ] )
+    pcapng.assert_block32_size( [1, 2, 3, 4, 5, 6, 7, 8] )
+    with pytest.raises(AssertionError):
+      pcapng.assert_block32_size( [1        ] )
+    with pytest.raises(AssertionError):
+      pcapng.assert_block32_size( [1, 2     ] )
+    with pytest.raises(AssertionError):
+      pcapng.assert_block32_size( [1, 2, 3  ] )
+    
 
 

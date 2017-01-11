@@ -20,9 +20,10 @@ def pad_to_block32(data):
     result = pad_to_len(data, pad_len)
     return result
 
-def verify_block32(data):
+def assert_block32_size(data):
     assert type(data) == list
-    assert 0 == len(data) % 4
+    assert (0 == len(data) % 4), "data must be 32-bit aligned"
+    return True;
 
 
 def section_header_block(data):
