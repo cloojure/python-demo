@@ -34,3 +34,6 @@ def test_xxx():
     assert type( 3.14 ) == float
     assert type( "abc" ) == str
     assert 3 != 4
+
+    assert 4 == math.ceil( 3.14 )
+    assert 4 == math.ceil( 4.0 )
