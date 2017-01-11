@@ -12,8 +12,8 @@ def pad_to_len(data, tolen, padval=0):
 
 def pad_to_block32(data):
     assert type(data) == list
-    curr_blks = len(data) / 4
-    pad_blks = math.ceil( curr_blks )
+    curr_blks = len(data) / 4.0
+    pad_blks = int( math.ceil( curr_blks ))
     pad_len = pad_blks * 4
     result = pad_to_len(data, pad_len)
     return result
