@@ -3,6 +3,8 @@ import struct;
 import time;
 import math;
 
+#todo options (for all)
+
 def pad_to_len(data, tolen, padval=0):
     assert type(data) == list
     elem_needed = tolen - len(data)
@@ -25,5 +27,27 @@ def section_header_block(data):
     major_version = 0
     section_length = -1     #todo set to actual (incl padding)
     data_pad = pad_to_block32(data)
-#   options=<none> at present
+    options=[]              #todo none at present
 #   blk_total_len =
+
+#todo
+# http://www.tcpdump.org/linktypes.html
+LINKTYPE_ETHERNET   =     1
+LINKTYPE_IPV4       =   228
+LINKTYPE_IPV6       =   229
+
+def interface_desc_block():
+    blk_type = 0x00000001
+    link_type = LINKTYPE_ETHERNET   # todo how determine?
+    reserved = 0
+    snaplen = 0                     # 0 => no limit
+    options_bytes=[]                #todo none at present
+    block_len_total = ( 4 +       # block type
+                        4 +       # block total length
+                        2 + 2 +   # linktype + reserved
+                        4 +       # snaplen
+                        len(options_bytes) +
+                        4 )       # block total length
+    return None
+
+

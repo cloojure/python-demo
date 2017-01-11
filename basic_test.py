@@ -37,3 +37,7 @@ def test_xxx():
 
     assert 4 == math.ceil( 3.14 )
     assert 4 == math.ceil( 4.0 )
+    x = (2 +
+         3)
+    assert 5 == x
+
