@@ -24,5 +24,6 @@ def section_header_block(data):
     major_version = 1
     major_version = 0
     section_length = -1     #todo set to actual (incl padding)
+    data_pad = pad_to_block32(data)
 #   options=<none> at present
 #   blk_total_len =
