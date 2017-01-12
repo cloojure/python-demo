@@ -61,12 +61,11 @@ print( ':[16:24]  %r' % result[16:24] )
 print( ':[24:28]  %r' % result[24:28] )
 
 assert 28 == len(result)
-# assert ('\n\r\r\n',) == struct.unpack( '!l', result[0:4] )
-assert (32,) == struct.unpack( '!l', result[4:8] )
-xx = struct.unpack( '!L', result[8:12] )
-yy = 0x1A2B3C4D
-assert (yy,) == xx
-# assert xxx == result[12:14]
+assert 0x0A0D0D0A == util.first( struct.unpack( '!l', result[0:4] ))
+assert 32 == util.first( struct.unpack( '!l', result[4:8] ))
+assert 0x1A2B3C4D == util.first( struct.unpack( '!L', result[8:12] ))
+assert 1 == util.first( struct.unpack( '!h', result[12:14] ))
+assert 0 == util.first( struct.unpack( '!h', result[14:16] ))
 # assert xxx == result[14:16]
 # assert xxx == result[16:24]
 # assert xxx == result[24:28]

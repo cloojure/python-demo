@@ -47,5 +47,4 @@ def bytearray_to_str( arg ):
   return strval;
 
 def first( lst ):
-    assert type(lst) == list
     return lst[0]
