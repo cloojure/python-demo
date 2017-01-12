@@ -2,13 +2,8 @@
 import struct;
 import time;
 import math;
+import linktype;
 import util;
-
-#todo
-# http://www.tcpdump.org/linktypes.html
-LINKTYPE_ETHERNET   =     1
-LINKTYPE_IPV4       =   228
-LINKTYPE_IPV6       =   229
 
 #todo options (for all)
 
@@ -41,7 +36,7 @@ def section_header_block(data):
 
 def interface_desc_block():
     blk_type = 0x00000001
-    link_type = LINKTYPE_ETHERNET   # todo how determine?
+    link_type = linktype.LINKTYPE_ETHERNET   # todo how determine?
     reserved = 0
     snaplen = 0                     # 0 => no limit
     options_bytes=[]                #todo none at present
