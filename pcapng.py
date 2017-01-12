@@ -32,7 +32,6 @@ def assert_block32_size(data):
     assert (0 == len(data) % 4), "data must be 32-bit aligned"
     return True;
 
-
 def section_header_block(data):
     assert type(data) == list
     data_pad = pad_to_block32(data)
@@ -77,6 +76,23 @@ def interface_desc_block():
     header = ( struct.pack( '=LlHHl', blk_type, blk_total_len, link_type, reserved,
                                       snaplen ) +
                options_str + 
+               struct.pack( '=l', blk_total_len ))
+    return header
+
+def simple_pkt_block(pkt_data):
+    assert type(pkt_data) == list
+    pkt_data_pad = pad_to_block32(pkt_data)
+    blk_type = 0x00000003
+    original_pkt_len = len(pkt_data)
+    pkt_data_pad_len = len(pkt_data_pad)
+    blk_total_len = ( 4 +      # block type
+                      4 +      # block total length
+                      4 +      # original packet length
+                      pkt_data_pad_len +
+                      4 )      # block total length
+# *** continue here ***
+    header = ( struct.pack( '=LlL', blk_type, blk_total_len, original_pkt_len ) +
+               pkd_data_pad + 
                struct.pack( '=l', blk_total_len ))
     return header
 
