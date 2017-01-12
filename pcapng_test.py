@@ -60,6 +60,7 @@ def test_pad_to_block32():
 
 def test_section_header_block():
     result = pcapng.section_header_block( [1,2,3] )
+    assert type( result )  == str
     assert 28              == len(result)
     assert 0x0A0D0D0A      == util.first( struct.unpack( '=l', result[0:4] ))
     assert 32              == util.first( struct.unpack( '=l', result[4:8] ))
@@ -71,6 +72,7 @@ def test_section_header_block():
 
 def test_interface_desc_block():
     result = pcapng.interface_desc_block()
+    assert type( result )   == str
     assert 20               == len(result)
     assert 0x00000001       == util.first( struct.unpack( '=L', result[0:4] ))
     assert 20               == util.first( struct.unpack( '=l', result[4:8] ))
@@ -86,8 +88,7 @@ def test_simple_pkt_block():
     original_pkt_len    = util.first( struct.unpack( '=L', util.chrarray_to_str( result[8:12]) ))
     pkt_data_pad_len    = pcapng.block32_pad_len( original_pkt_len )
     pkt_data            = result[ 12 : (12+original_pkt_len) ]
-    blk_tot_len_end     = util.first( struct.unpack( '=L', util.chrarray_to_str( 
-                            result[ (blk_tot_len-4) : blk_tot_len ]) ))
+    blk_tot_len_end     = util.first( struct.unpack( '=L', util.chrarray_to_str( result[-4:blk_tot_len]) ))
 
     assert type( result )       == list
     assert block_type           == 0x00000003
