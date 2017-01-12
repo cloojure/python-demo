@@ -81,22 +81,33 @@ def test_interface_desc_block():
     assert 0                == util.first( struct.unpack( '=l', result[12:16] ))
     assert 20               == util.first( struct.unpack( '=l', result[16:20] ))
 
-def test_simple_pkt_block():
-    result = pcapng.simple_pkt_block( [1,2,3] )
-    block_type          = util.first(struct.unpack( '=L', result[0:4]  ))
-    blk_tot_len         = util.first(struct.unpack( '=L', result[4:8]  ))
-    original_pkt_len    = util.first(struct.unpack( '=L', result[8:12] ))
+def decode_simple_pkt_block( block ):
+    assert type( block ) == str
+    block_type          = util.first( struct.unpack( '=L', block[0:4]  ))
+    blk_tot_len         = util.first( struct.unpack( '=L', block[4:8]  ))
+    original_pkt_len    = util.first( struct.unpack( '=L', block[8:12] ))
     pkt_data_pad_len    = util.block32_pad_len( original_pkt_len )
-    pkt_data            = result[ 12 : (12+original_pkt_len) ]
-    blk_tot_len_end     = util.first(struct.unpack( '=L', result[-4:blk_tot_len] ))
+    pkt_data            = block[ 12 : (12+original_pkt_len)  ]
+    blk_tot_len_end     = util.first( struct.unpack( '=L', block[ -4:blk_tot_len] ))
+    result = {  'block_type'          : block_type ,
+                'blk_tot_len'         : blk_tot_len ,
+                'original_pkt_len'    : original_pkt_len ,
+                'pkt_data_pad_len'    : pkt_data_pad_len ,
+                'pkt_data'            : pkt_data ,
+                'blk_tot_len_end'     : blk_tot_len_end }
+    return result
 
-    assert type( result )       == str
-    assert block_type           == 0x00000003
-    assert blk_tot_len          == 20
-    assert blk_tot_len          == blk_tot_len_end
-    assert blk_tot_len          == len(result)
-    assert blk_tot_len          == 16 + pkt_data_pad_len
-    assert original_pkt_len     == 3
-    assert pkt_data             == util.byte_list_to_str( [1,2,3] )
+def test_simple_pkt_block():
+    block_str = pcapng.simple_pkt_block( [1,2,3] )
+    block_data = decode_simple_pkt_block( block_str )
+    assert type( block_str )                == str
+    assert type( block_data )               == dict
+    assert block_data['block_type']         == 0x00000003
+    assert block_data['blk_tot_len']        == 20
+    assert block_data['blk_tot_len']        == block_data['blk_tot_len_end']
+    assert block_data['blk_tot_len']        == len(block_str)
+    assert block_data['blk_tot_len']        == 16 + block_data['pkt_data_pad_len']
+    assert block_data['original_pkt_len']   == 3
+    assert block_data['pkt_data']           == util.byte_list_to_str( [1,2,3] )
 
 
