@@ -59,5 +59,6 @@ def test_xxx():
     assert 2 == 6 % 4
     assert 3 == 7 % 4
 
+  # for ch in result[4:8]: print( ord(ch) )   # loop example
 
 

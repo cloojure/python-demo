@@ -44,6 +44,31 @@ def test_pad_to_block32():
       pcapng.assert_block32_size( [1, 2     ] )
     with pytest.raises(AssertionError):
       pcapng.assert_block32_size( [1, 2, 3  ] )
-    
+
+# def test_section_header_block():
+
+result = pcapng.section_header_block( [1,2,3] )
+print( ':len()    %r' % len(result) )
+print( ':[ 0: 4]  %s' % util.str_to_bytearray( result[0:4] ))
+print
+for ch in result[4:8]: print( ord(ch) )
+print
+print( ':[ 4: 8]  %r' % result[4:8] )
+print( ':[ 8:12]  %r' % result[8:12] )
+print( ':[12:14]  %r' % result[12:14] )
+print( ':[14:16]  %r' % result[14:16] )
+print( ':[16:24]  %r' % result[16:24] )
+print( ':[24:28]  %r' % result[24:28] )
+
+assert 28 == len(result)
+# assert ('\n\r\r\n',) == struct.unpack( '!l', result[0:4] )
+assert (32,) == struct.unpack( '!l', result[4:8] )
+xx = struct.unpack( '!L', result[8:12] )
+yy = 0x1A2B3C4D
+assert (yy,) == xx
+# assert xxx == result[12:14]
+# assert xxx == result[14:16]
+# assert xxx == result[16:24]
+# assert xxx == result[24:28]
 
 

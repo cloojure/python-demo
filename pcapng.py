@@ -2,6 +2,7 @@
 import struct;
 import time;
 import math;
+import util;
 
 #todo options (for all)
 
@@ -27,25 +28,31 @@ def assert_block32_size(data):
 
 
 def section_header_block(data):
+    assert type(data) == list
     data_pad = pad_to_block32(data)
+    data_pad_len = len(data_pad)
+    print( 'data_pad_len %r' % data_pad_len )
 
     blk_type = 0x0A0D0D0A
     byte_order_magic = 0x1A2B3C4D
     major_version = 1
-    major_version = 0
-    section_length = -1     #todo set to actual (incl padding)
+    minor_version = 0
+    section_len = -1     #todo set to actual (incl padding)
     options_bytes=[]        #todo none at present
     options_str = util.bytearray_to_str( options_bytes )
-    blk_total_len = ( 4 +       # block type
-                      4 +       # block total length
-                      4 +       # byte order magic
-                      2 + 2 +   # major version + minor version
-                      8 +       # section length
-                      len(options_bytes) +
-                      4 )       # block total length
+    header_len = ( 4 +       # block type
+                   4 +       # block total length
+                   4 +       # byte order magic
+                   2 + 2 +   # major version + minor version
+                   8 +       # section length
+                   len(options_bytes) +
+                   4 )       # block total length
+    blk_total_len = header_len + data_pad_len
     header = ( struct.pack( '!LlLhhq', blk_type, blk_total_len, byte_order_magic,
                                        major_version, minor_version, section_len ) +
-               options_str + struct.pack( '!l', blk_total_len ))
+               options_str + 
+               struct.pack( '!l', blk_total_len ))
+    return header
 
 #todo
 # http://www.tcpdump.org/linktypes.html

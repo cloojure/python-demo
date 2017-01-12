@@ -18,6 +18,7 @@ def test_xxx():
     assert '\x00\x00\x00\x00\x00\x00\x00\x05' == struct.pack( '!q', 5 )
     assert '\x00\x00\x00\x05'                 == struct.pack( '!l', 5 )
     assert '\x00\x05'                         == struct.pack( '!h', 5 )
+    assert 1 == util.first( [1,2,3] )
 
     assert 3 == len( [ 1, 2, 3] );
     assert (3, 140000) == util.split_float(3.14);

@@ -46,3 +46,6 @@ def bytearray_to_str( arg ):
   strval = chrarray_to_str( bytearray_to_chrarray(arg) );
   return strval;
 
+def first( lst ):
+    assert type(lst) == list
+    return lst[0]
