@@ -90,11 +90,9 @@ def simple_pkt_block(pkt_data):
                       4 +      # original packet length
                       pkt_data_pad_len +
                       4 )      # block total length
-# *** continue here ***
-    header = ( struct.pack( '=LlL', blk_type, blk_total_len, original_pkt_len ) +
-               pkd_data_pad + 
-               struct.pack( '=l', blk_total_len ))
-    return header
-
+    block = ( list( struct.pack( '=LLL', blk_type, blk_total_len, original_pkt_len )) +
+              pkt_data_pad + 
+              list( struct.pack( '=L', blk_total_len )))
+    return block
 
 

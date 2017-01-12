@@ -66,4 +66,19 @@ def test_interface_desc_block():
     assert 0                == util.first( struct.unpack( '=l', result[12:16] ))
     assert 20               == util.first( struct.unpack( '=l', result[16:20] ))
 
+def test_simple_pkt_block():
+    result = pcapng.simple_pkt_block( [1,2,3] )
+    block_type          = util.first( struct.unpack( '=L', ''.join(result[0:4])  ))
+    blk_tot_len         = util.first( struct.unpack( '=L', ''.join(result[4:8])  ))
+    original_pkt_len    = util.first( struct.unpack( '=L', ''.join(result[8:12]) ))
+    pkt_data            = result[ 12 : (12+original_pkt_len) ]
+    blk_tot_len_end     = util.first( struct.unpack( '=L', ''.join(result[ (blk_tot_len-4) : blk_tot_len ]) ))
+
+    assert 20           == blk_tot_len
+    assert 0x00000003   == block_type
+    assert len(result)  == blk_tot_len
+    assert 3            == original_pkt_len
+    assert [1,2,3]      == pkt_data
+    assert 20           == blk_tot_len_end
+
 
