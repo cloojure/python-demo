@@ -66,8 +66,7 @@ assert 32 == util.first( struct.unpack( '!l', result[4:8] ))
 assert 0x1A2B3C4D == util.first( struct.unpack( '!L', result[8:12] ))
 assert 1 == util.first( struct.unpack( '!h', result[12:14] ))
 assert 0 == util.first( struct.unpack( '!h', result[14:16] ))
-# assert xxx == result[14:16]
-# assert xxx == result[16:24]
+assert -1 == util.first( struct.unpack( '!h', result[16:24] ))
 # assert xxx == result[24:28]
 
 
