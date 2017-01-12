@@ -4,6 +4,12 @@ import time;
 import math;
 import util;
 
+#todo
+# http://www.tcpdump.org/linktypes.html
+LINKTYPE_ETHERNET   =     1
+LINKTYPE_IPV4       =   228
+LINKTYPE_IPV6       =   229
+
 #todo options (for all)
 
 def pad_to_len(data, tolen, padval=0):
@@ -37,28 +43,22 @@ def section_header_block(data):
     byte_order_magic = 0x1A2B3C4D
     major_version = 1
     minor_version = 0
-    section_len = -1     #todo set to actual (incl padding)
+    section_len = -1        #todo set to actual (incl padding)
     options_bytes=[]        #todo none at present
     options_str = util.bytearray_to_str( options_bytes )
-    header_len = ( 4 +       # block type
-                   4 +       # block total length
-                   4 +       # byte order magic
-                   2 + 2 +   # major version + minor version
-                   8 +       # section length
+    header_len = ( 4 +      # block type
+                   4 +      # block total length
+                   4 +      # byte order magic
+                   2 + 2 +  # major version + minor version
+                   8 +      # section length
                    len(options_bytes) +
-                   4 )       # block total length
+                   4 )      # block total length
     blk_total_len = header_len + data_pad_len
-    header = ( struct.pack( '!LlLhhq', blk_type, blk_total_len, byte_order_magic,
+    header = ( struct.pack( '=LlLhhq', blk_type, blk_total_len, byte_order_magic,
                                        major_version, minor_version, section_len ) +
                options_str + 
-               struct.pack( '!l', blk_total_len ))
+               struct.pack( '=l', blk_total_len ))
     return header
-
-#todo
-# http://www.tcpdump.org/linktypes.html
-LINKTYPE_ETHERNET   =     1
-LINKTYPE_IPV4       =   228
-LINKTYPE_IPV6       =   229
 
 def interface_desc_block():
     blk_type = 0x00000001
@@ -66,13 +66,15 @@ def interface_desc_block():
     reserved = 0
     snaplen = 0                     # 0 => no limit
     options_bytes=[]                #todo none at present
+    options_str = util.bytearray_to_str( options_bytes )
     assert_block32_size( options_bytes )
-    block_len_total = ( 4 +       # block type
-                        4 +       # block total length
-                        2 + 2 +   # linktype + reserved
-                        4 +       # snaplen
-                        len(options_bytes) +
-                        4 )       # block total length
+    header_len = ( 4 +         # block type
+                   4 +         # block total length
+                   2 + 2 +     # linktype + reserved
+                   4 +         # snaplen
+                   len(options_bytes) +
+                   4 )         # block total length
+    blk_total_len = header_len
 
 
 

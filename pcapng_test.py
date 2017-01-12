@@ -48,12 +48,12 @@ def test_pad_to_block32():
 def test_section_header_block():
     result = pcapng.section_header_block( [1,2,3] )
     assert 28              == len(result)
-    assert 0x0A0D0D0A      == util.first( struct.unpack( '!l', result[0:4] ))
-    assert 32              == util.first( struct.unpack( '!l', result[4:8] ))
-    assert 0x1A2B3C4D      == util.first( struct.unpack( '!L', result[8:12] ))
-    assert 1               == util.first( struct.unpack( '!h', result[12:14] ))
-    assert 0               == util.first( struct.unpack( '!h', result[14:16] ))
-    assert -1              == util.first( struct.unpack( '!q', result[16:24] ))
-    assert 32              == util.first( struct.unpack( '!l', result[24:28] ))
+    assert 0x0A0D0D0A      == util.first( struct.unpack( '=l', result[0:4] ))
+    assert 32              == util.first( struct.unpack( '=l', result[4:8] ))
+    assert 0x1A2B3C4D      == util.first( struct.unpack( '=L', result[8:12] ))
+    assert 1               == util.first( struct.unpack( '=h', result[12:14] ))
+    assert 0               == util.first( struct.unpack( '=h', result[14:16] ))
+    assert -1              == util.first( struct.unpack( '=q', result[16:24] ))
+    assert 32              == util.first( struct.unpack( '=l', result[24:28] ))
 
 
