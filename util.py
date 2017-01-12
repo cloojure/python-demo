@@ -3,10 +3,11 @@ import struct;
 import time;
 import math;
 
+
+
+#todo used anywhere?
 def fmt_pcap_hdr( ts_sec, ts_usec, incl_len, orig_len ):
-    print( (ts_sec, ts_usec, incl_len, orig_len) );
     packed = struct.pack( '>LLLL', ts_sec, ts_usec, incl_len, orig_len);
-    print( 'packed:  %r' % packed );
     return packed;
 
 def split_float( fval ):
@@ -51,3 +52,28 @@ def byte_list_to_str(arg):
 
 def first( lst ):
     return lst[0]
+
+def pad_to_len(data, tolen, padval=0):
+    assert type(data) == list
+    elem_needed = tolen - len(data)
+    assert (elem_needed >= 0), "padding cannot be negative"
+    result = data + [padval]*elem_needed
+    return result;
+
+def block32_pad_len(curr_len):
+    curr_blks = float(curr_len) / 4.0
+    pad_blks = int( math.ceil( curr_blks ))
+    pad_len = pad_blks * 4
+    return pad_len
+
+def pad_to_block32(data):
+    assert type(data) == list
+    pad_len = block32_pad_len( len(data) )
+    result = pad_to_len(data, pad_len)
+    return result
+
+def assert_block32_size(data):
+    assert type(data) == list
+    assert (0 == len(data) % 4), "data must be 32-bit aligned"
+    return True;
+

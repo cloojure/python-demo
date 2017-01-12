@@ -7,56 +7,56 @@ import util;
 import pcapng;
 
 def test_block32_pad_len():
-    assert 0 == pcapng.block32_pad_len(  0 )
+    assert 0 == util.block32_pad_len(  0 )
 
-    assert 4 == pcapng.block32_pad_len(  1 )
-    assert 4 == pcapng.block32_pad_len(  2 )
-    assert 4 == pcapng.block32_pad_len(  3 )
-    assert 4 == pcapng.block32_pad_len(  4 )
+    assert 4 == util.block32_pad_len(  1 )
+    assert 4 == util.block32_pad_len(  2 )
+    assert 4 == util.block32_pad_len(  3 )
+    assert 4 == util.block32_pad_len(  4 )
 
-    assert 8 == pcapng.block32_pad_len(  5 )
-    assert 8 == pcapng.block32_pad_len(  6 )
-    assert 8 == pcapng.block32_pad_len(  7 )
-    assert 8 == pcapng.block32_pad_len(  8 )
+    assert 8 == util.block32_pad_len(  5 )
+    assert 8 == util.block32_pad_len(  6 )
+    assert 8 == util.block32_pad_len(  7 )
+    assert 8 == util.block32_pad_len(  8 )
 
 def test_pad_to_len():
     with pytest.raises(AssertionError):
-        pcapng.pad_to_len( [1, 2, 3, 4], 3 )
+        util.pad_to_len( [1, 2, 3, 4], 3 )
     with pytest.raises(AssertionError):
-        pcapng.pad_to_len( 5, 3 )
+        util.pad_to_len( 5, 3 )
 
-    assert [0, 0, 0, 0] == pcapng.pad_to_len( [          ], 4 )
-    assert [1, 0, 0, 0] == pcapng.pad_to_len( [1,        ], 4 )
-    assert [1, 2, 0, 0] == pcapng.pad_to_len( [1, 2      ], 4 )
-    assert [1, 2, 3, 0] == pcapng.pad_to_len( [1, 2, 3   ], 4 )
-    assert [1, 2, 3, 4] == pcapng.pad_to_len( [1, 2, 3, 4], 4 )
+    assert [0, 0, 0, 0] == util.pad_to_len( [          ], 4 )
+    assert [1, 0, 0, 0] == util.pad_to_len( [1,        ], 4 )
+    assert [1, 2, 0, 0] == util.pad_to_len( [1, 2      ], 4 )
+    assert [1, 2, 3, 0] == util.pad_to_len( [1, 2, 3   ], 4 )
+    assert [1, 2, 3, 4] == util.pad_to_len( [1, 2, 3, 4], 4 )
 
-    assert [9, 9, 9, 9] == pcapng.pad_to_len( [          ], 4, 9)
-    assert [1, 9, 9, 9] == pcapng.pad_to_len( [1,        ], 4, 9)
-    assert [1, 2, 9, 9] == pcapng.pad_to_len( [1, 2      ], 4, 9)
-    assert [1, 2, 3, 9] == pcapng.pad_to_len( [1, 2, 3   ], 4, 9)
-    assert [1, 2, 3, 4] == pcapng.pad_to_len( [1, 2, 3, 4], 4, 9)
+    assert [9, 9, 9, 9] == util.pad_to_len( [          ], 4, 9)
+    assert [1, 9, 9, 9] == util.pad_to_len( [1,        ], 4, 9)
+    assert [1, 2, 9, 9] == util.pad_to_len( [1, 2      ], 4, 9)
+    assert [1, 2, 3, 9] == util.pad_to_len( [1, 2, 3   ], 4, 9)
+    assert [1, 2, 3, 4] == util.pad_to_len( [1, 2, 3, 4], 4, 9)
 
 def test_pad_to_block32():
-    assert [                      ] == pcapng.pad_to_block32( [                      ] )
-    assert [1, 0, 0, 0            ] == pcapng.pad_to_block32( [1                     ] )
-    assert [1, 2, 0, 0            ] == pcapng.pad_to_block32( [1, 2                  ] )
-    assert [1, 2, 3, 0            ] == pcapng.pad_to_block32( [1, 2, 3               ] )
-    assert [1, 2, 3, 4            ] == pcapng.pad_to_block32( [1, 2, 3, 4            ] )
-    assert [1, 2, 3, 4, 5, 0, 0, 0] == pcapng.pad_to_block32( [1, 2, 3, 4, 5         ] )
-    assert [1, 2, 3, 4, 5, 6, 0, 0] == pcapng.pad_to_block32( [1, 2, 3, 4, 5, 6      ] )
-    assert [1, 2, 3, 4, 5, 6, 7, 0] == pcapng.pad_to_block32( [1, 2, 3, 4, 5, 6, 7   ] )
-    assert [1, 2, 3, 4, 5, 6, 7, 8] == pcapng.pad_to_block32( [1, 2, 3, 4, 5, 6, 7, 8] )
+    assert [                      ] == util.pad_to_block32( [                      ] )
+    assert [1, 0, 0, 0            ] == util.pad_to_block32( [1                     ] )
+    assert [1, 2, 0, 0            ] == util.pad_to_block32( [1, 2                  ] )
+    assert [1, 2, 3, 0            ] == util.pad_to_block32( [1, 2, 3               ] )
+    assert [1, 2, 3, 4            ] == util.pad_to_block32( [1, 2, 3, 4            ] )
+    assert [1, 2, 3, 4, 5, 0, 0, 0] == util.pad_to_block32( [1, 2, 3, 4, 5         ] )
+    assert [1, 2, 3, 4, 5, 6, 0, 0] == util.pad_to_block32( [1, 2, 3, 4, 5, 6      ] )
+    assert [1, 2, 3, 4, 5, 6, 7, 0] == util.pad_to_block32( [1, 2, 3, 4, 5, 6, 7   ] )
+    assert [1, 2, 3, 4, 5, 6, 7, 8] == util.pad_to_block32( [1, 2, 3, 4, 5, 6, 7, 8] )
     
-    pcapng.assert_block32_size( [                      ] )
-    pcapng.assert_block32_size( [1, 2, 3, 4            ] )
-    pcapng.assert_block32_size( [1, 2, 3, 4, 5, 6, 7, 8] )
+    util.assert_block32_size( [                      ] )
+    util.assert_block32_size( [1, 2, 3, 4            ] )
+    util.assert_block32_size( [1, 2, 3, 4, 5, 6, 7, 8] )
     with pytest.raises(AssertionError):
-      pcapng.assert_block32_size( [1        ] )
+      util.assert_block32_size( [1        ] )
     with pytest.raises(AssertionError):
-      pcapng.assert_block32_size( [1, 2     ] )
+      util.assert_block32_size( [1, 2     ] )
     with pytest.raises(AssertionError):
-      pcapng.assert_block32_size( [1, 2, 3  ] )
+      util.assert_block32_size( [1, 2, 3  ] )
 
 def test_section_header_block():
     result = pcapng.section_header_block( [1,2,3] )
@@ -86,7 +86,7 @@ def test_simple_pkt_block():
     block_type          = util.first(struct.unpack( '=L', result[0:4]  ))
     blk_tot_len         = util.first(struct.unpack( '=L', result[4:8]  ))
     original_pkt_len    = util.first(struct.unpack( '=L', result[8:12] ))
-    pkt_data_pad_len    = pcapng.block32_pad_len( original_pkt_len )
+    pkt_data_pad_len    = util.block32_pad_len( original_pkt_len )
     pkt_data            = result[ 12 : (12+original_pkt_len) ]
     blk_tot_len_end     = util.first(struct.unpack( '=L', result[-4:blk_tot_len] ))
 

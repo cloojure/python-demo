@@ -12,34 +12,9 @@ LINKTYPE_IPV6       =   229
 
 #todo options (for all)
 
-#todo move to util.*
-def pad_to_len(data, tolen, padval=0):
-    assert type(data) == list
-    elem_needed = tolen - len(data)
-    assert (elem_needed >= 0), "padding cannot be negative"
-    result = data + [padval]*elem_needed
-    return result;
-
-def block32_pad_len(curr_len):
-    curr_blks = float(curr_len) / 4.0
-    pad_blks = int( math.ceil( curr_blks ))
-    pad_len = pad_blks * 4
-    return pad_len
-
-def pad_to_block32(data):
-    assert type(data) == list
-    pad_len = block32_pad_len( len(data) )
-    result = pad_to_len(data, pad_len)
-    return result
-
-def assert_block32_size(data):
-    assert type(data) == list
-    assert (0 == len(data) % 4), "data must be 32-bit aligned"
-    return True;
-
 def section_header_block(data):
     assert type(data) == list
-    data_pad = pad_to_block32(data)
+    data_pad = util.pad_to_block32(data)
     data_pad_len = len(data_pad)
     print( 'data_pad_len %r' % data_pad_len )
 
@@ -71,7 +46,7 @@ def interface_desc_block():
     snaplen = 0                     # 0 => no limit
     options_bytes=[]                #todo none at present
     options_str = util.byte_list_to_str(options_bytes)
-    assert_block32_size( options_bytes )
+    util.assert_block32_size( options_bytes )
     blk_total_len = (  4 +         # block type
                        4 +         # block total length
                        2 + 2 +     # linktype + reserved
@@ -86,7 +61,7 @@ def interface_desc_block():
 
 def simple_pkt_block(pkt_data):
     assert type(pkt_data) == list
-    pkt_data_pad = pad_to_block32(pkt_data)
+    pkt_data_pad     = util.pad_to_block32(pkt_data)
     pkt_data_pad_str = util.byte_list_to_str( pkt_data_pad )
     blk_type = 0x00000003
     original_pkt_len = len(pkt_data)
