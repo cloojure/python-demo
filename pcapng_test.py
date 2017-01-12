@@ -56,4 +56,14 @@ def test_section_header_block():
     assert -1              == util.first( struct.unpack( '=q', result[16:24] ))
     assert 32              == util.first( struct.unpack( '=l', result[24:28] ))
 
+def test_interface_desc_block():
+    result = pcapng.interface_desc_block()
+    assert 20               == len(result)
+    assert 0x00000001       == util.first( struct.unpack( '=L', result[0:4] ))
+    assert 20               == util.first( struct.unpack( '=l', result[4:8] ))
+    assert 1                == util.first( struct.unpack( '=H', result[8:10] ))
+    assert 0                == util.first( struct.unpack( '=H', result[10:12] ))
+    assert 0                == util.first( struct.unpack( '=l', result[12:16] ))
+    assert 20               == util.first( struct.unpack( '=l', result[16:20] ))
+
 

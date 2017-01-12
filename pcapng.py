@@ -68,13 +68,17 @@ def interface_desc_block():
     options_bytes=[]                #todo none at present
     options_str = util.bytearray_to_str( options_bytes )
     assert_block32_size( options_bytes )
-    header_len = ( 4 +         # block type
-                   4 +         # block total length
-                   2 + 2 +     # linktype + reserved
-                   4 +         # snaplen
-                   len(options_bytes) +
-                   4 )         # block total length
-    blk_total_len = header_len
+    blk_total_len = (  4 +         # block type
+                       4 +         # block total length
+                       2 + 2 +     # linktype + reserved
+                       4 +         # snaplen
+                       len(options_bytes) +
+                       4 )         # block total length
+    header = ( struct.pack( '=LlHHl', blk_type, blk_total_len, link_type, reserved,
+                                      snaplen ) +
+               options_str + 
+               struct.pack( '=l', blk_total_len ))
+    return header
 
 
 
