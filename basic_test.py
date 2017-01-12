@@ -51,12 +51,13 @@ def test_xxx():
 
     assert 4 == math.ceil( 3.14 )
     assert 4 == math.ceil( 4.0 )
-    x = (2 +    # demo line continuation
+    x = (2 +    # line continuation need parens
          3)
     assert 5 == x
     assert 0 == 4 % 4
     assert 1 == 5 % 4
     assert 2 == 6 % 4
     assert 3 == 7 % 4
+
 
 

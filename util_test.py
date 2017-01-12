@@ -11,8 +11,8 @@ def test_answer():
     assert func(3) == 4
 
 def test_xxx():
-    xx1 = struct.pack( '>hhl', 1, 2, 3 );  # h='short', l='long'
-    xx2 = struct.unpack( '>hhl', xx1 )
+    xx1 = struct.pack(   '!hhl', 1, 2, 3 ); # h='short', l='long'
+    xx2 = struct.unpack( '!hhl', xx1 )      # ! => network byte order (big-endian)
     assert xx1 == '\x00\x01\x00\x02\x00\x00\x00\x03'
     assert xx2 == ( 1, 2, 3 );
 
