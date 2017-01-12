@@ -43,7 +43,7 @@ def section_header_block(data):
                       8 +       # section length
                       len(options_bytes) +
                       4 )       # block total length
-    header = ( struct.pack( '!LlLhhl', blk_type, blk_total_len, byte_order_magic,
+    header = ( struct.pack( '!LlLhhq', blk_type, blk_total_len, byte_order_magic,
                                        major_version, minor_version, section_len ) +
                options_str + struct.pack( '!l', blk_total_len ))
 

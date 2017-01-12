@@ -15,6 +15,7 @@ def test_xxx():
     xx2 = struct.unpack( '!hhl', xx1 )      # ! => network byte order (big-endian)
     assert xx1 == '\x00\x01\x00\x02\x00\x00\x00\x03'
     assert xx2 == ( 1, 2, 3 );
+    assert '\x00\x00\x00\x00\x00\x00\x00\x05' == struct.pack( '!q', 5 )
 
     assert 3 == len( [ 1, 2, 3] );
     assert (3, 140000) == util.split_float(3.14);
