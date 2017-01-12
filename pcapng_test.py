@@ -89,12 +89,13 @@ def test_simple_pkt_block():
     blk_tot_len_end     = util.first( struct.unpack( '=L', util.chrarray_to_str( 
                             result[ (blk_tot_len-4) : blk_tot_len ]) ))
 
-    assert 20           == blk_tot_len
-    assert 0x00000003   == block_type
-    assert len(result)  == blk_tot_len
-    assert 3            == original_pkt_len
-    assert [1,2,3]      == pkt_data
-    assert blk_tot_len  == blk_tot_len_end
-    assert blk_tot_len  == 16 + pkt_data_pad_len
+    assert type( result )       == list
+    assert block_type           == 0x00000003
+    assert blk_tot_len          == 20
+    assert blk_tot_len          == blk_tot_len_end
+    assert blk_tot_len          == len(result)
+    assert blk_tot_len          == 16 + pkt_data_pad_len
+    assert original_pkt_len     == 3
+    assert pkt_data             == [1,2,3]
 
 
