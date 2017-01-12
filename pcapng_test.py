@@ -6,6 +6,19 @@ import math;
 import util;
 import pcapng;
 
+def test_block32_pad_len():
+    assert 0 == pcapng.block32_pad_len(  0 )
+
+    assert 4 == pcapng.block32_pad_len(  1 )
+    assert 4 == pcapng.block32_pad_len(  2 )
+    assert 4 == pcapng.block32_pad_len(  3 )
+    assert 4 == pcapng.block32_pad_len(  4 )
+
+    assert 8 == pcapng.block32_pad_len(  5 )
+    assert 8 == pcapng.block32_pad_len(  6 )
+    assert 8 == pcapng.block32_pad_len(  7 )
+    assert 8 == pcapng.block32_pad_len(  8 )
+
 def test_pad_to_len():
     with pytest.raises(AssertionError):
         pcapng.pad_to_len( [1, 2, 3, 4], 3 )
@@ -68,17 +81,20 @@ def test_interface_desc_block():
 
 def test_simple_pkt_block():
     result = pcapng.simple_pkt_block( [1,2,3] )
-    block_type          = util.first( struct.unpack( '=L', ''.join(result[0:4])  ))
-    blk_tot_len         = util.first( struct.unpack( '=L', ''.join(result[4:8])  ))
-    original_pkt_len    = util.first( struct.unpack( '=L', ''.join(result[8:12]) ))
+    block_type          = util.first( struct.unpack( '=L', util.chrarray_to_str( result[0:4])  ))
+    blk_tot_len         = util.first( struct.unpack( '=L', util.chrarray_to_str( result[4:8])  ))
+    original_pkt_len    = util.first( struct.unpack( '=L', util.chrarray_to_str( result[8:12]) ))
+    pkt_data_pad_len    = pcapng.block32_pad_len( original_pkt_len )
     pkt_data            = result[ 12 : (12+original_pkt_len) ]
-    blk_tot_len_end     = util.first( struct.unpack( '=L', ''.join(result[ (blk_tot_len-4) : blk_tot_len ]) ))
+    blk_tot_len_end     = util.first( struct.unpack( '=L', util.chrarray_to_str( 
+                            result[ (blk_tot_len-4) : blk_tot_len ]) ))
 
     assert 20           == blk_tot_len
     assert 0x00000003   == block_type
     assert len(result)  == blk_tot_len
     assert 3            == original_pkt_len
     assert [1,2,3]      == pkt_data
-    assert 20           == blk_tot_len_end
+    assert blk_tot_len  == blk_tot_len_end
+    assert blk_tot_len  == 16 + pkt_data_pad_len
 
 

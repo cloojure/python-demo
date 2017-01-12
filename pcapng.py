@@ -12,6 +12,7 @@ LINKTYPE_IPV6       =   229
 
 #todo options (for all)
 
+#todo move to util.*
 def pad_to_len(data, tolen, padval=0):
     assert type(data) == list
     elem_needed = tolen - len(data)
@@ -19,11 +20,15 @@ def pad_to_len(data, tolen, padval=0):
     result = data + [padval]*elem_needed
     return result;
 
-def pad_to_block32(data):
-    assert type(data) == list
-    curr_blks = len(data) / 4.0
+def block32_pad_len(curr_len):
+    curr_blks = float(curr_len) / 4.0
     pad_blks = int( math.ceil( curr_blks ))
     pad_len = pad_blks * 4
+    return pad_len
+
+def pad_to_block32(data):
+    assert type(data) == list
+    pad_len = block32_pad_len( len(data) )
     result = pad_to_len(data, pad_len)
     return result
 
