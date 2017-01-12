@@ -39,15 +39,14 @@ def bytearray_to_chrarray( arg ):
   return charArray;
 
 #todo rename char_list_to_str
-def chrarray_to_str( arg ):
+def chr_list_to_str(arg):
   #todo verify input type & values [0..255]
   strval = ''.join( arg );
   return strval;
 
-#todo rename byte_list_to_str
-def bytearray_to_str( arg ):
+def byte_list_to_str(arg):
   #todo verify input type & values [0..255]
-  strval = chrarray_to_str( bytearray_to_chrarray(arg) );
+  strval = chr_list_to_str(bytearray_to_chrarray(arg));
   return strval;
 
 def first( lst ):

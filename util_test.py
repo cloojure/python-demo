@@ -26,8 +26,8 @@ def test_xxx():
 
     assert [97, 98, 99]      == util.str_to_bytearray(       'abc'           )
     assert ['a', 'b', 'c']   == util.bytearray_to_chrarray(  [97, 98, 99]    )
-    assert 'abc'             == util.bytearray_to_str(       [97, 98, 99]    )
-    assert 'abc'             == util.chrarray_to_str(        ['a', 'b', 'c'] )
+    assert 'abc'             == util.byte_list_to_str([97, 98, 99])
+    assert 'abc'             == util.chr_list_to_str(['a', 'b', 'c'])
 
     ts1 = util.curr_utc_time_tuple();
     time.sleep(0.1);

@@ -49,7 +49,7 @@ def section_header_block(data):
     minor_version = 0
     section_len = -1        #todo set to actual (incl padding)
     options_bytes=[]        #todo none at present
-    options_str = util.bytearray_to_str( options_bytes )
+    options_str = util.byte_list_to_str(options_bytes)
     header_len = ( 4 +      # block type
                    4 +      # block total length
                    4 +      # byte order magic
@@ -70,7 +70,7 @@ def interface_desc_block():
     reserved = 0
     snaplen = 0                     # 0 => no limit
     options_bytes=[]                #todo none at present
-    options_str = util.bytearray_to_str( options_bytes )
+    options_str = util.byte_list_to_str(options_bytes)
     assert_block32_size( options_bytes )
     blk_total_len = (  4 +         # block type
                        4 +         # block total length
@@ -87,6 +87,7 @@ def interface_desc_block():
 def simple_pkt_block(pkt_data):
     assert type(pkt_data) == list
     pkt_data_pad = pad_to_block32(pkt_data)
+    pkt_data_pad_str = util.byte_list_to_str( pkt_data_pad )
     blk_type = 0x00000003
     original_pkt_len = len(pkt_data)
     pkt_data_pad_len = len(pkt_data_pad)
@@ -95,9 +96,9 @@ def simple_pkt_block(pkt_data):
                       4 +      # original packet length
                       pkt_data_pad_len +
                       4 )      # block total length
-    block = ( list( struct.pack( '=LLL', blk_type, blk_total_len, original_pkt_len )) +
-              pkt_data_pad + 
-              list( struct.pack( '=L', blk_total_len )))
+    block = ( struct.pack( '=LLL', blk_type, blk_total_len, original_pkt_len ) +
+              pkt_data_pad_str + 
+              struct.pack( '=L', blk_total_len ))
     return block
 
 

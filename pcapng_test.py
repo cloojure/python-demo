@@ -62,9 +62,9 @@ def test_section_header_block():
     result = pcapng.section_header_block( [1,2,3] )
     assert type( result )  == str
     assert 28              == len(result)
-    assert 0x0A0D0D0A      == util.first( struct.unpack( '=l', result[0:4] ))
-    assert 32              == util.first( struct.unpack( '=l', result[4:8] ))
-    assert 0x1A2B3C4D      == util.first( struct.unpack( '=L', result[8:12] ))
+    assert 0x0A0D0D0A      == util.first( struct.unpack( '=l', result[0:4]   ))
+    assert 32              == util.first( struct.unpack( '=l', result[4:8]   ))
+    assert 0x1A2B3C4D      == util.first( struct.unpack( '=L', result[8:12]  ))
     assert 1               == util.first( struct.unpack( '=h', result[12:14] ))
     assert 0               == util.first( struct.unpack( '=h', result[14:16] ))
     assert -1              == util.first( struct.unpack( '=q', result[16:24] ))
@@ -74,29 +74,29 @@ def test_interface_desc_block():
     result = pcapng.interface_desc_block()
     assert type( result )   == str
     assert 20               == len(result)
-    assert 0x00000001       == util.first( struct.unpack( '=L', result[0:4] ))
-    assert 20               == util.first( struct.unpack( '=l', result[4:8] ))
-    assert 1                == util.first( struct.unpack( '=H', result[8:10] ))
+    assert 0x00000001       == util.first( struct.unpack( '=L', result[0:4]   ))
+    assert 20               == util.first( struct.unpack( '=l', result[4:8]   ))
+    assert 1                == util.first( struct.unpack( '=H', result[8:10]  ))
     assert 0                == util.first( struct.unpack( '=H', result[10:12] ))
     assert 0                == util.first( struct.unpack( '=l', result[12:16] ))
     assert 20               == util.first( struct.unpack( '=l', result[16:20] ))
 
 def test_simple_pkt_block():
     result = pcapng.simple_pkt_block( [1,2,3] )
-    block_type          = util.first( struct.unpack( '=L', util.chrarray_to_str( result[0:4])  ))
-    blk_tot_len         = util.first( struct.unpack( '=L', util.chrarray_to_str( result[4:8])  ))
-    original_pkt_len    = util.first( struct.unpack( '=L', util.chrarray_to_str( result[8:12]) ))
+    block_type          = util.first(struct.unpack( '=L', result[0:4]  ))
+    blk_tot_len         = util.first(struct.unpack( '=L', result[4:8]  ))
+    original_pkt_len    = util.first(struct.unpack( '=L', result[8:12] ))
     pkt_data_pad_len    = pcapng.block32_pad_len( original_pkt_len )
     pkt_data            = result[ 12 : (12+original_pkt_len) ]
-    blk_tot_len_end     = util.first( struct.unpack( '=L', util.chrarray_to_str( result[-4:blk_tot_len]) ))
+    blk_tot_len_end     = util.first(struct.unpack( '=L', result[-4:blk_tot_len] ))
 
-    assert type( result )       == list
+    assert type( result )       == str
     assert block_type           == 0x00000003
     assert blk_tot_len          == 20
     assert blk_tot_len          == blk_tot_len_end
     assert blk_tot_len          == len(result)
     assert blk_tot_len          == 16 + pkt_data_pad_len
     assert original_pkt_len     == 3
-    assert pkt_data             == [1,2,3]
+    assert pkt_data             == util.byte_list_to_str( [1,2,3] )
 
 
