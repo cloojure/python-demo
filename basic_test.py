@@ -36,12 +36,9 @@ def test_xxx():
     assert 0x0103 == (1*16**2 + 0*16 + 3)
     assert 3 == (7 % 4)
     assert [0, 0, 0] == [0]*3
-    with pytest.raises(ZeroDivisionError):
-        1 / 0
-    with pytest.raises(AssertionError):
-        assert 1 == 0
-    with pytest.raises(AssertionError):
-        thrower()
+    with pytest.raises(ZeroDivisionError):  1 / 0
+    with pytest.raises(AssertionError):     assert 1 == 0
+    with pytest.raises(AssertionError):     thrower()
 
     assert type( [1,2,3] ) == list
     assert type( 3 ) == int
@@ -60,6 +57,5 @@ def test_xxx():
     assert 3 == 7 % 4
 
   # for ch in result[4:8]: print( ord(ch) )   # loop example
-
 
 

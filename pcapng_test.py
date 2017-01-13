@@ -19,10 +19,8 @@ def test_block32_pad_len():
     assert 8 == util.block32_pad_len(  8 )
 
 def test_pad_to_len():
-    with pytest.raises(AssertionError):
-        util.pad_to_len( [1, 2, 3, 4], 3 )
-    with pytest.raises(AssertionError):
-        util.pad_to_len( 5, 3 )
+    with pytest.raises(AssertionError): util.pad_to_len( [1, 2, 3, 4], 3 )
+    with pytest.raises(AssertionError): util.pad_to_len( 5, 3 )
 
     assert [0, 0, 0, 0] == util.pad_to_len( [          ], 4 )
     assert [1, 0, 0, 0] == util.pad_to_len( [1,        ], 4 )
@@ -50,12 +48,9 @@ def test_pad_to_block32():
     util.assert_block32_size( [                      ] )
     util.assert_block32_size( [1, 2, 3, 4            ] )
     util.assert_block32_size( [1, 2, 3, 4, 5, 6, 7, 8] )
-    with pytest.raises(AssertionError):
-      util.assert_block32_size( [1        ] )
-    with pytest.raises(AssertionError):
-      util.assert_block32_size( [1, 2     ] )
-    with pytest.raises(AssertionError):
-      util.assert_block32_size( [1, 2, 3  ] )
+    with pytest.raises(AssertionError): util.assert_block32_size( [1        ] )
+    with pytest.raises(AssertionError): util.assert_block32_size( [1, 2     ] )
+    with pytest.raises(AssertionError): util.assert_block32_size( [1, 2, 3  ] )
 
 def test_section_header_block():
     blk_str     = pcapng.section_header_block_create()
