@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import struct;
 import time;
-import math;
+import pytest
 import util;
 
 def func(x):
@@ -9,6 +9,54 @@ def func(x):
 
 def test_answer():
     assert func(3) == 4
+
+def test_block32_pad_len():
+    assert 0 == util.block32_pad_len(  0 )
+
+    assert 4 == util.block32_pad_len(  1 )
+    assert 4 == util.block32_pad_len(  2 )
+    assert 4 == util.block32_pad_len(  3 )
+    assert 4 == util.block32_pad_len(  4 )
+
+    assert 8 == util.block32_pad_len(  5 )
+    assert 8 == util.block32_pad_len(  6 )
+    assert 8 == util.block32_pad_len(  7 )
+    assert 8 == util.block32_pad_len(  8 )
+
+def test_pad_to_len():
+    with pytest.raises(AssertionError): util.pad_to_len( [1, 2, 3, 4], 3 )
+    with pytest.raises(AssertionError): util.pad_to_len( 5, 3 )
+
+    assert [0, 0, 0, 0] == util.pad_to_len( [          ], 4 )
+    assert [1, 0, 0, 0] == util.pad_to_len( [1,        ], 4 )
+    assert [1, 2, 0, 0] == util.pad_to_len( [1, 2      ], 4 )
+    assert [1, 2, 3, 0] == util.pad_to_len( [1, 2, 3   ], 4 )
+    assert [1, 2, 3, 4] == util.pad_to_len( [1, 2, 3, 4], 4 )
+
+    assert [9, 9, 9, 9] == util.pad_to_len( [          ], 4, 9)
+    assert [1, 9, 9, 9] == util.pad_to_len( [1,        ], 4, 9)
+    assert [1, 2, 9, 9] == util.pad_to_len( [1, 2      ], 4, 9)
+    assert [1, 2, 3, 9] == util.pad_to_len( [1, 2, 3   ], 4, 9)
+    assert [1, 2, 3, 4] == util.pad_to_len( [1, 2, 3, 4], 4, 9)
+
+def test_pad_to_block32():
+    assert [                      ] == util.pad_to_block32( [                      ] )
+    assert [1, 0, 0, 0            ] == util.pad_to_block32( [1                     ] )
+    assert [1, 2, 0, 0            ] == util.pad_to_block32( [1, 2                  ] )
+    assert [1, 2, 3, 0            ] == util.pad_to_block32( [1, 2, 3               ] )
+    assert [1, 2, 3, 4            ] == util.pad_to_block32( [1, 2, 3, 4            ] )
+    assert [1, 2, 3, 4, 5, 0, 0, 0] == util.pad_to_block32( [1, 2, 3, 4, 5         ] )
+    assert [1, 2, 3, 4, 5, 6, 0, 0] == util.pad_to_block32( [1, 2, 3, 4, 5, 6      ] )
+    assert [1, 2, 3, 4, 5, 6, 7, 0] == util.pad_to_block32( [1, 2, 3, 4, 5, 6, 7   ] )
+    assert [1, 2, 3, 4, 5, 6, 7, 8] == util.pad_to_block32( [1, 2, 3, 4, 5, 6, 7, 8] )
+
+    util.assert_block32_size( [                      ] )
+    util.assert_block32_size( [1, 2, 3, 4            ] )
+    util.assert_block32_size( [1, 2, 3, 4, 5, 6, 7, 8] )
+    with pytest.raises(AssertionError): util.assert_block32_size( [1        ] )
+    with pytest.raises(AssertionError): util.assert_block32_size( [1, 2     ] )
+    with pytest.raises(AssertionError): util.assert_block32_size( [1, 2, 3  ] )
+
 
 def test_xxx():
     xx1 = struct.pack(   '!hhl', 1, 2, 3 ); # h='short', l='long'
