@@ -10,7 +10,6 @@ def test_section_header_block():
     blk_data    = pcapng.section_header_block_decode(blk_str)
     assert type( blk_str  )  == str
     assert type( blk_data )  == dict
-
     assert blk_data['block_type']           == 0x0A0D0D0A
     assert blk_data['block_total_len']      == 28
     assert blk_data['block_total_len']      == len( blk_str )
@@ -26,7 +25,6 @@ def test_interface_desc_block():
     blk_data   = pcapng.interface_desc_block_decode(blk_str)
     assert type( blk_str )     == str
     assert type( blk_data )    == dict
-
     assert blk_data['block_type']          == 0x00000001
     assert blk_data['block_total_len']     == 20
     assert blk_data['block_total_len']     == blk_data['block_total_len_end']
