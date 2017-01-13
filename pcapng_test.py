@@ -1,10 +1,12 @@
 #!/usr/bin/python
 import pytest;
 import struct;
-import time;
-import math;
-import util;
+
+import linktype;
 import pcapng;
+import util;
+import pcapng
+
 
 def test_block32_pad_len():
     assert 0 == util.block32_pad_len(  0 )
@@ -59,47 +61,39 @@ def test_pad_to_block32():
       util.assert_block32_size( [1, 2, 3  ] )
 
 def test_section_header_block():
-    result = pcapng.section_header_block( [1,2,3] )
-    assert type( result )  == str
-    assert 28              == len(result)
-    assert 0x0A0D0D0A      == util.first( struct.unpack( '=l', result[0:4]   ))
-    assert 32              == util.first( struct.unpack( '=l', result[4:8]   ))
-    assert 0x1A2B3C4D      == util.first( struct.unpack( '=L', result[8:12]  ))
-    assert 1               == util.first( struct.unpack( '=h', result[12:14] ))
-    assert 0               == util.first( struct.unpack( '=h', result[14:16] ))
-    assert -1              == util.first( struct.unpack( '=q', result[16:24] ))
-    assert 32              == util.first( struct.unpack( '=l', result[24:28] ))
+    block_str     = pcapng.section_header_block_create()
+    block_data    = pcapng.section_header_block_decode(block_str)
+    assert type( block_str  )  == str
+    assert type( block_data )  == dict
+
+    assert block_data['block_type']           == 0x0A0D0D0A
+    assert block_data['blk_total_len']        == 28
+    assert block_data['blk_total_len']        == len( block_str )
+    assert block_data['blk_total_len']        == block_data['blk_total_len_end']
+    assert block_data['byte_order_magic']     == 0x1A2B3C4D
+    assert block_data['major_version']        == 1
+    assert block_data['minor_version']        == 0
+    assert block_data['section_len']          == -1
+
 
 def test_interface_desc_block():
-    result = pcapng.interface_desc_block()
-    assert type( result )   == str
-    assert 20               == len(result)
-    assert 0x00000001       == util.first( struct.unpack( '=L', result[0:4]   ))
-    assert 20               == util.first( struct.unpack( '=l', result[4:8]   ))
-    assert 1                == util.first( struct.unpack( '=H', result[8:10]  ))
-    assert 0                == util.first( struct.unpack( '=H', result[10:12] ))
-    assert 0                == util.first( struct.unpack( '=l', result[12:16] ))
-    assert 20               == util.first( struct.unpack( '=l', result[16:20] ))
+    block_str    = pcapng.interface_desc_block_create()
+    block_data   = pcapng.interface_desc_block_decode(block_str)
+    assert type( block_str )     == str
+    assert type( block_data )    == dict
 
-def decode_simple_pkt_block( block ):
-    assert type( block ) == str
-    block_type          = util.first( struct.unpack( '=L', block[0:4]  ))
-    blk_tot_len         = util.first( struct.unpack( '=L', block[4:8]  ))
-    original_pkt_len    = util.first( struct.unpack( '=L', block[8:12] ))
-    pkt_data_pad_len    = util.block32_pad_len( original_pkt_len )
-    pkt_data            = block[ 12 : (12+original_pkt_len)  ]
-    blk_tot_len_end     = util.first( struct.unpack( '=L', block[ -4:blk_tot_len] ))
-    result = {  'block_type'          : block_type ,
-                'blk_tot_len'         : blk_tot_len ,
-                'original_pkt_len'    : original_pkt_len ,
-                'pkt_data_pad_len'    : pkt_data_pad_len ,
-                'pkt_data'            : pkt_data ,
-                'blk_tot_len_end'     : blk_tot_len_end }
-    return result
+    assert block_data['block_type']          == 0x00000001
+    assert block_data['block_total_len']     == 20
+    assert block_data['block_total_len']     == block_data['block_total_len_end']
+    assert block_data['block_total_len']     == len(block_str)
+    assert block_data['link_type']           == linktype.LINKTYPE_ETHERNET
+    assert block_data['reserved']            == 0
+    assert block_data['snaplen']             == 0
+
 
 def test_simple_pkt_block():
-    block_str = pcapng.simple_pkt_block( [1,2,3] )
-    block_data = decode_simple_pkt_block( block_str )
+    block_str   = pcapng.simple_pkt_block_create([1, 2, 3])
+    block_data  = pcapng.simple_pkt_block_decode(block_str)
     assert type( block_str )                == str
     assert type( block_data )               == dict
     assert block_data['block_type']         == 0x00000003
