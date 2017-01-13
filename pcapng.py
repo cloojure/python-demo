@@ -65,7 +65,7 @@ def interface_desc_block_create():
     return block
 
 def interface_desc_block_decode(block):
-    assert type( block ) == str
+    assert type( block ) == str       #todo is tuple & str ok?
     block_type              = struct.unpack( '=L', block[0:4]   )[0]
     block_total_len         = struct.unpack( '=l', block[4:8]   )[0]
     link_type               = struct.unpack( '=H', block[8:10]  )[0]
@@ -84,7 +84,7 @@ def interface_desc_block_decode(block):
 
 
 def simple_pkt_block_create(pkt_data):
-    assert type(pkt_data) == list
+    assert type(pkt_data) == list       #todo is tuple & str ok?
     pkt_data_pad     = util.pad_to_block32(pkt_data)
     pkt_data_pad_str = util.byte_list_to_str( pkt_data_pad )
     block_type = 0x00000003
